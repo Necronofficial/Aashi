@@ -1,0 +1,171 @@
+html = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Surprise For You 💝</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #ffdde1;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    #gift-box {
+      width: 200px;
+      height: 200px;
+      background: pink;
+      border: 3px solid #e91e63;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      animation: bounce 1s infinite alternate;
+    }
+    #gift-box::before, #gift-box::after {
+      content: '';
+      position: absolute;
+      background: #e91e63;
+    }
+    #gift-box::before {
+      width: 100%;
+      height: 20px;
+      top: 50%;
+      left: 0;
+    }
+    #gift-box::after {
+      height: 100%;
+      width: 20px;
+      left: 50%;
+      top: 0;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-10px); }
+    }
+
+    .hidden, #message-card {
+      display: none;
+    }
+
+    #fireworks {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: transparent;
+    }
+
+    #message-card {
+      margin-top: 20px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      padding: 30px;
+      max-width: 500px;
+      text-align: center;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    #message-card img {
+      width: 120px;
+      margin-bottom: 15px;
+    }
+
+    #message-card h1 {
+      color: #e91e63;
+    }
+
+    #message-card p {
+      font-size: 18px;
+      white-space: pre-line;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+  </style>
+</head>
+<body>
+  <div id="gift-box" onclick="openGift()"></div>
+  <canvas id="fireworks" class="hidden"></canvas>
+
+  <div id="message-card" class="hidden">
+    <img src="https://i.ibb.co/5R4tGtv/teddy.png" alt="Teddy Bear">
+    <h1>💌 Special Message 💌</h1>
+    <p>
+Ore dil janiya jidd meri tujhse tere sahare saans h meri 🥺🤌🏻💫<br><br>
+Badal jesa pyaar h tera,<br>
+Sagar jesi pyaas h meri 🫣😙💕
+    </p>
+  </div>
+
+  <script>
+    function openGift() {
+      let pass = prompt("Write your pass 💌\\nHint: your hubby name");
+      if (pass && pass.trim().toLowerCase() === "siri") {
+        document.getElementById('fireworks').classList.remove('hidden');
+        launchFireworks();
+        document.getElementById('gift-box').style.display = 'none';
+        document.getElementById('message-card').classList.remove('hidden');
+      } else {
+        alert("Wrong password 😝");
+      }
+    }
+
+    function launchFireworks() {
+      const canvas = document.getElementById('fireworks');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const particles = [];
+
+      for (let i = 0; i < 100; i++) {
+        particles.push({
+          x: canvas.width/2,
+          y: canvas.height/2,
+          dx: (Math.random() - 0.5) * 10,
+          dy: (Math.random() - 0.5) * 10,
+          radius: Math.random() * 3 + 2,
+          color: `hsl(${Math.random()*360}, 100%, 50%)`
+        });
+      }
+
+      let frame = 0;
+      function animate() {
+        if (frame > 80) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let p of particles) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          p.x += p.dx;
+          p.y += p.dy;
+          p.radius *= 0.96;
+        }
+        frame++;
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+  </script>
+</body>
+</html>
+"""
+
+with open("surprise_message.html", "w") as file:
+    file.write(html)
+
+print("✅ HTML file saved! Download it from the left panel → Files → Right-click → Download")
