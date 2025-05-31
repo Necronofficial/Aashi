@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Surprise For You 💝</title>
@@ -59,6 +58,7 @@
       height: 100%;
       pointer-events: none;
       background: transparent;
+      z-index: 1;
     }
     #message-card {
       display: none;
@@ -70,7 +70,7 @@
       max-width: 500px;
       text-align: center;
       animation: fadeIn 2s ease-in-out;
-      z-index: 10;
+      z-index: 2;
     }
     #message-card img {
       width: 120px;
@@ -86,43 +86,43 @@
     @keyframes fadeIn {
       from {opacity: 0;}
       to {opacity: 1;}
-    }
+    }.heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: red;
+  transform: rotate(45deg);
+  animation: floatUp 5s linear infinite;
+  opacity: 0.6;
+  z-index: 0;
+}
+.heart::before, .heart::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: red;
+  border-radius: 50%;
+}
+.heart::before {
+  top: -10px;
+  left: 0;
+}
+.heart::after {
+  left: -10px;
+  top: 0;
+}
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) rotate(45deg);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-800px) rotate(45deg);
+    opacity: 0;
+  }
+}
 
-    .heart {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      transform: rotate(45deg);
-      animation: floatUp 5s linear infinite;
-      opacity: 0.6;
-    }
-    .heart::before, .heart::after {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: red;
-      border-radius: 50%;
-    }
-    .heart::before {
-      top: -10px;
-      left: 0;
-    }
-    .heart::after {
-      left: -10px;
-      top: 0;
-    }
-    @keyframes floatUp {
-      0% {
-        transform: translateY(0) rotate(45deg);
-        opacity: 0.6;
-      }
-      100% {
-        transform: translateY(-800px) rotate(45deg);
-        opacity: 0;
-      }
-    }
   </style>
 </head>
 <body>
@@ -131,28 +131,25 @@
   <div id="message-card">
     <img src="https://i.ibb.co/5R4tGtv/teddy.png" alt="Teddy Bear">
     <h1>💌 Special Message 💌</h1>
-<p style="white-space: pre-line;">
-Ore dil janiya jidd meri tujhse,<br>
-Tere sahare saans h meri 🥺🤌🏻💫
+    <p>
+Ore dil janiya jidd meri tujhse<br>
+tere sahare saans h meri 🥺🤌🏻💫Badal jesa pyaar h tera ,<br> Sagar jesi pyaas h meri 🫣😙💕 </p>
 
-Badal jesa pyaar h tera ,<br>
-Sagar jesi pyaas h meri 🫣😙💕
-</p>
   </div>
-  <audio id="bg-music" src="https://drive.google.com/uc?export=download&id=187-fSn3PdZWaGIyOPic7mHL71TVCVCq3" loop></audio>
-
-  <script>
+  <audio id="bg-music" src="https://drive.google.com/uc?export=download&id=187-fSn3PdZWaGIyOPic7mHL71TVCVCq3" loop></audio>  <script>
     function openGift() {
-      let pass = prompt("Write your password 💌| Hint: your hubby name");
+      let pass = prompt("Write your pass 💌\nHint: your hubby name");
       if (pass && pass.trim().toLowerCase() === "siri") {
         document.getElementById('fireworks').classList.remove('hidden');
         launchFireworks();
         document.getElementById('gift-box').style.display = 'none';
         document.getElementById('message-card').style.display = 'block';
-        document.getElementById('bg-music').play();
+        const music = document.getElementById('bg-music');
+        music.volume = 0.5;
+        music.play();
         createHearts();
       } else {
-        alert("Wrong password 😝🤪🤪🤪😭😭😭");
+        alert("Wrong password 😝");
       }
     }
 
@@ -200,8 +197,14 @@ Sagar jesi pyaas h meri 🫣😙💕
         document.body.appendChild(heart);
         setTimeout(() => heart.remove(), 5000);
       }
-      setInterval(createHearts, 3000);
+      setInterval(() => {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.bottom = '-20px';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+      }, 1000);
     }
-  </script>
-</body>
+  </script></body>
 </html>
