@@ -15,6 +15,7 @@
       justify-content: center;
       min-height: 100vh;
       overflow: hidden;
+      position: relative;
     }
     #gift-box {
       width: 200px;
@@ -43,16 +44,13 @@
       left: 50%;
       top: 0;
     }
-
     @keyframes bounce {
       from { transform: translateY(0); }
       to { transform: translateY(-10px); }
     }
-
-    .hidden, #message-card {
+    .hidden {
       display: none;
     }
-
     #fireworks {
       position: fixed;
       top: 0;
@@ -62,8 +60,8 @@
       pointer-events: none;
       background: transparent;
     }
-
     #message-card {
+      display: none;
       margin-top: 20px;
       background: white;
       border-radius: 20px;
@@ -72,34 +70,65 @@
       max-width: 500px;
       text-align: center;
       animation: fadeIn 2s ease-in-out;
+      z-index: 10;
     }
-
     #message-card img {
       width: 120px;
       margin-bottom: 15px;
     }
-
     #message-card h1 {
       color: #e91e63;
     }
-
     #message-card p {
       font-size: 18px;
       white-space: pre-line;
     }
-
     @keyframes fadeIn {
       from {opacity: 0;}
       to {opacity: 1;}
     }
 
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: floatUp 5s linear infinite;
+      opacity: 0.6;
+    }
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(45deg);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-800px) rotate(45deg);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
   <div id="gift-box" onclick="openGift()"></div>
   <canvas id="fireworks" class="hidden"></canvas>
-
-  <div id="message-card" class="hidden">
+  <div id="message-card">
     <img src="https://i.ibb.co/5R4tGtv/teddy.png" alt="Teddy Bear">
     <h1>💌 Special Message 💌</h1>
     <p>
@@ -108,6 +137,7 @@ Badal jesa pyaar h tera,<br>
 Sagar jesi pyaas h meri 🫣😙💕
     </p>
   </div>
+  <audio id="bg-music" src="https://www.computerhope.com/jargon/m/example.mp3" loop></audio>
 
   <script>
     function openGift() {
@@ -116,7 +146,9 @@ Sagar jesi pyaas h meri 🫣😙💕
         document.getElementById('fireworks').classList.remove('hidden');
         launchFireworks();
         document.getElementById('gift-box').style.display = 'none';
-        document.getElementById('message-card').classList.remove('hidden');
+        document.getElementById('message-card').style.display = 'block';
+        document.getElementById('bg-music').play();
+        createHearts();
       } else {
         alert("Wrong password 😝");
       }
@@ -127,9 +159,7 @@ Sagar jesi pyaas h meri 🫣😙💕
       const ctx = canvas.getContext('2d');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-
       const particles = [];
-
       for (let i = 0; i < 100; i++) {
         particles.push({
           x: canvas.width/2,
@@ -140,7 +170,6 @@ Sagar jesi pyaas h meri 🫣😙💕
           color: `hsl(${Math.random()*360}, 100%, 50%)`
         });
       }
-
       let frame = 0;
       function animate() {
         if (frame > 80) return;
@@ -158,6 +187,18 @@ Sagar jesi pyaas h meri 🫣😙💕
         requestAnimationFrame(animate);
       }
       animate();
+    }
+
+    function createHearts() {
+      for (let i = 0; i < 30; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.bottom = '-20px';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+      }
+      setInterval(createHearts, 3000);
     }
   </script>
 </body>
