@@ -1,24 +1,33 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Surprise For You 💝</title>
+  <title>💖 For My Love 💖</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: #ffdde1;
+      background: url('teddy.png') no-repeat center center fixed;
+      background-size: cover;
       font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      height: 100vh;
       overflow: hidden;
       position: relative;
     }
+    #overlay {
+      background: rgba(255, 255, 255, 0.6);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
     #gift-box {
-      width: 200px;
-      height: 200px;
+      width: 150px;
+      height: 150px;
       background: pink;
       border: 3px solid #e91e63;
       border-radius: 20px;
@@ -46,165 +55,91 @@
     @keyframes bounce {
       from { transform: translateY(0); }
       to { transform: translateY(-10px); }
-    }
-    .hidden {
-      display: none;
-    }
-    #fireworks {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      background: transparent;
-      z-index: 1;
-    }
-    #message-card {
-      display: none;
-      margin-top: 20px;
-      background: white;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
-      padding: 30px;
-      max-width: 500px;
-      text-align: center;
-      animation: fadeIn 2s ease-in-out;
-      z-index: 2;
-    }
-    #message-card img {
-      width: 120px;
-      margin-bottom: 15px;
-    }
-    #message-card h1 {
-      color: #e91e63;
-    }
-    #message-card p {
-      font-size: 18px;
-      white-space: pre-line;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }.heart {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: red;
-  transform: rotate(45deg);
-  animation: floatUp 5s linear infinite;
-  opacity: 0.6;
-  z-index: 0;
+    }#message-card {
+  display: none;
+  background: url('https://i.ibb.co/sKFvFZ5/old-paper-texture.jpg') no-repeat center;
+  background-size: cover;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  max-width: 600px;
+  color: #4b2e18;
+  font-family: 'Brush Script MT', cursive;
+  font-size: 24px;
+  white-space: pre-line;
+  z-index: 2;
 }
-.heart::before, .heart::after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: red;
-  border-radius: 50%;
-}
-.heart::before {
-  top: -10px;
-  left: 0;
-}
-.heart::after {
-  left: -10px;
+
+canvas {
+  position: fixed;
   top: 0;
-}
-@keyframes floatUp {
-  0% {
-    transform: translateY(0) rotate(45deg);
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateY(-800px) rotate(45deg);
-    opacity: 0;
-  }
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
 }
 
   </style>
 </head>
 <body>
-  <div id="gift-box" onclick="openGift()"></div>
-  <canvas id="fireworks" class="hidden"></canvas>
-  <div id="message-card">
-    <img src="https://i.ibb.co/5R4tGtv/teddy.png" alt="Teddy Bear">
-    <h1>💌 Special Message 💌</h1>
-    <p>
-Ore dil janiya jidd meri tujhse<br>
-tere sahare saans h meri 🥺🤌🏻💫Badal jesa pyaar h tera ,<br> Sagar jesi pyaas h meri 🫣😙💕 </p>
+  <div id="overlay">
+    <div id="gift-box" onclick="openGift()"></div>
+    <div id="message-card">
+      Ore dil janiya jidd meri tujhse
+      tere sahare saans h meri 🥺🤌🏻💫Badal jesa pyaar h tera ,
+  Sagar jesi pyaas h meri 🫣😙💕
+</div>
 
   </div>
-  <audio id="bg-music" src="https://drive.google.com/uc?export=download&id=187-fSn3PdZWaGIyOPic7mHL71TVCVCq3" loop></audio>  <script>
+  <canvas id="fireworks"></canvas>
+  <audio id="bg-music" src="mysong.mp3" loop></audio>  <script>
     function openGift() {
-      let pass = prompt("Write your pass 💌\nHint: your hubby name");
-      if (pass && pass.trim().toLowerCase() === "siri") {
-        document.getElementById('fireworks').classList.remove('hidden');
-        launchFireworks();
+      const pass = prompt("Hint: your hubby name 💌");
+      if (pass && pass.trim().toLowerCase() === 'siri') {
         document.getElementById('gift-box').style.display = 'none';
         document.getElementById('message-card').style.display = 'block';
-        const music = document.getElementById('bg-music');
-        music.volume = 0.5;
-        music.play();
-        createHearts();
+        document.getElementById('bg-music').play();
+        launchFireworks();
       } else {
-        alert("Wrong password 😝");
+        alert("Oops! Wrong password 😜");
       }
     }
 
     function launchFireworks() {
-      const canvas = document.getElementById('fireworks');
-      const ctx = canvas.getContext('2d');
+      const canvas = document.getElementById("fireworks");
+      const ctx = canvas.getContext("2d");
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
-      const particles = [];
-      for (let i = 0; i < 100; i++) {
-        particles.push({
-          x: canvas.width/2,
-          y: canvas.height/2,
-          dx: (Math.random() - 0.5) * 10,
-          dy: (Math.random() - 0.5) * 10,
+
+      const fireworks = [];
+      for (let i = 0; i < 50; i++) {
+        fireworks.push({
+          x: canvas.width / 2,
+          y: canvas.height / 2,
+          dx: Math.random() * 10 - 5,
+          dy: Math.random() * 10 - 5,
           radius: Math.random() * 3 + 2,
-          color: `hsl(${Math.random()*360}, 100%, 50%)`
+          color: `hsl(${Math.random() * 360}, 100%, 60%)`
         });
       }
+
       let frame = 0;
       function animate() {
-        if (frame > 80) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let p of particles) {
+        fireworks.forEach(f => {
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = p.color;
+          ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+          ctx.fillStyle = f.color;
           ctx.fill();
-          p.x += p.dx;
-          p.y += p.dy;
-          p.radius *= 0.96;
-        }
+          f.x += f.dx;
+          f.y += f.dy;
+          f.radius *= 0.96;
+        });
         frame++;
-        requestAnimationFrame(animate);
+        if (frame < 100) requestAnimationFrame(animate);
       }
       animate();
-    }
-
-    function createHearts() {
-      for (let i = 0; i < 30; i++) {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.style.left = Math.random() * window.innerWidth + 'px';
-        heart.style.bottom = '-20px';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
-      }
-      setInterval(() => {
-        const heart = document.createElement('div');
-        heart.classList.add('heart');
-        heart.style.left = Math.random() * window.innerWidth + 'px';
-        heart.style.bottom = '-20px';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
-      }, 1000);
     }
   </script></body>
 </html>
